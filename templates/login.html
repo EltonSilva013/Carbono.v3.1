@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>Login - Ecológica</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <h1>🌿 Ecológica</h1>
+
+        {% with messages = get_flashed_messages() %}
+          {% if messages %}
+            {% for message in messages %}
+              <div class="msg-sucesso" style="background-color: #ffcdd2; color: #d32f2f; border: 1px solid #ef9a9a;">
+                {{ message }}
+              </div>
+            {% endfor %}
+          {% endif %}
+        {% endwith %}
+
+        <form class="form" action="{{ url_for('login') }}" method="POST">
+            <input type="email" name="email" placeholder="E-mail" required>
+            <input type="password" name="senha" placeholder="Senha" required>
+            <button type="submit">Entrar</button>
+        </form>
+
+        <div class="link-container">
+            <p>Não tem uma conta?</p>
+            <a href="{{ url_for('cadastro') }}" class="btn-link-form">Cadastre-se agora</a>
+        </div>
+    </div>
+</body>
+</html>

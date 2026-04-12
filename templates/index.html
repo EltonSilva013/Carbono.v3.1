@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>Dashboard - Ecológica</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body class="dashboard-body">
+
+<header class="navbar">
+    <div class="logo">🌿 <strong>Ecológica</strong></div>
+    <nav>
+        <a href="{{ url_for('index') }}">Início</a>
+        <a href="{{ url_for('logout') }}" style="color: #ffcdd2;">Sair</a>
+    </nav>
+</header>
+
+<main class="dashboard-main">
+    <section class="profile-card">
+        <div class="avatar">{{ session['usuario_nome'][0].upper() }}</div>
+        <div class="profile-info">
+            <h2>Bem-vindo, {{ session['usuario_nome'] }}</h2>
+            <p style="color: #666;">📧 {{ session['usuario_email'] }}</p>
+        </div>
+    </section>
+
+    <section class="stats">
+        <div class="stat-card">
+            <h3>{{ "%.2f"|format(total) }}</h3>
+            <p>kg CO₂ Gerados</p>
+        </div>
+        <div class="stat-card">
+            <h3>1</h3>
+            <p>Nível Atual</p>
+        </div>
+        <div class="stat-card">
+            <h3>0</h3>
+            <p>Conquistas</p>
+        </div>
+    </section>
+
+    <section class="registro-secao">
+        <h3>Registrar Atividade de Carbono</h3>
+        
+        {% with messages = get_flashed_messages() %}
+          {% if messages %}
+            {% for msg in messages %}<p class="msg-sucesso">{{ msg }}</p>{% endfor %}
+          {% endif %}
+        {% endwith %}
+
+        <form action="{{ url_for('registrar') }}" method="POST" class="form-horizontal">
+            <select name="atividade" required>
+                <option value="">Selecione a atividade...</option>
+                {% for a in atividades %}
+                <option value="{{ a.id_atividade }}">{{ a.nome }}</option>
+                {% endfor %}
+            </select>
+            <input type="number" step="0.01" name="quantidade" placeholder="Quantidade (km, kg ou kWh)" required>
+            <button type="submit">Salvar Registro</button>
+        </form>
+    </section>
+</main>
+
+</body>
+</html>
