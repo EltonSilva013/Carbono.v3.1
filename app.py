@@ -7,6 +7,7 @@ from werkzeug.security import generate_password_hash, check_password_hash
 app = Flask(__name__)
 app.secret_key = 'chave_secreta_ecologica_tcc'
 DATABASE = "database.db"
+app.jinja_env.cache = {}
 
 def conectar():
     conn = sqlite3.connect(DATABASE)
@@ -142,8 +143,30 @@ def logout():
 def abrir_navegador():
     webbrowser.open_new("http://127.0.0.1:5000")
 
+
+@app.route("/relatorio")
+def relatorio():
+    if "user_id" not in session:
+        return redirect(url_for("login"))
+    
+    conn = conectar()
+    registros = conn.execute("""
+        SELECT a.nome, r.quantidade, r.emissao_total, r.data_registro
+        FROM registros_carbono r
+        JOIN atividades a ON r.id_atividade = a.id_atividade
+        WHERE r.id_usuario = ?
+        ORDER BY r.data_registro DESC
+    """, (session["user_id"],)).fetchall()
+    conn.close()
+    
+    return render_template("relatorio.html", registros=registros)
+
+print(app.url_map)
+
 if __name__ == "__main__":
     init_db()
     # threading garante que o navegador abra SEM travar o servidor
     threading.Timer(1.5, abrir_navegador).start()
     app.run(debug=True, use_reloader=False)
+
+

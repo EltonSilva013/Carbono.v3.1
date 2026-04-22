@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <title>Relatório de Emissões</title>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #fafafa;
+            margin: 0;
+        }
+
+        /* CONTAINER CENTRAL */
+        .container {
+            width: 80%;
+            margin: 0 auto;
+        }
+
+        /* TOPO */
+        .topo {
+            background-color: #ffffff;
+            border-bottom: 2px solid #e0e0e0;
+        }
+
+        .topo-conteudo {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            height: 70px;
+        }
+
+        .topo h1 {
+            margin: 0;
+            color: #2e7d32;
+            font-size: 1.8em;
+            text-align: center;
+            flex: 1;
+        }
+
+        /* BOTÃO */
+        .btn-voltar {
+            padding: 10px 15px;
+            background-color: #2e7d32;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            font-weight: bold;
+        }
+
+        .btn-voltar:hover {
+            background-color: #1b5e20;
+        }
+
+        /* espaço vazio pra equilibrar o centro */
+        .espaco {
+            width: 100px;
+        }
+
+        /* TABELA */
+        table {
+            margin: 30px auto;
+            border-collapse: collapse;
+            width: 100%;
+            background-color: white;
+        }
+
+        th, td {
+            border: 1px solid #ccc;
+            padding: 10px;
+            text-align: center;
+        }
+
+        th {
+            background-color: #e8f5e9;
+            font-weight: bold;
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- TOPO -->
+    <div class="topo">
+        <div class="container topo-conteudo">
+            <a href="{{ url_for('index') }}" class="btn-voltar">← Voltar</a>
+
+            <h1>Relatório de Emissões</h1>
+
+            <div class="espaco"></div>
+        </div>
+    </div>
+
+    <!-- CONTEÚDO -->
+    <div class="container">
+        <table>
+            <tr>
+                <th>Atividade</th>
+                <th>Quantidade</th>
+                <th>Emissão Total (kg CO₂)</th>
+                <th>Data</th>
+            </tr>
+
+            {% for r in registros %}
+            <tr>
+                <td>{{ r.nome }}</td>
+                <td>{{ r.quantidade }}</td>
+                <td>{{ r.emissao_total }}</td>
+                <td>{{ r.data_registro }}</td>
+            </tr>
+            {% endfor %}
+        </table>
+    </div>
+
+</body>
+</html>
